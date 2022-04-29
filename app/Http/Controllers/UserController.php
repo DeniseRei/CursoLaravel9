@@ -27,4 +27,18 @@ class UserController extends Controller
 
         return view('users.show', compact('user'));
     }
+
+    /*Criando formulário úsuario*/
+
+    public function create()
+    {
+        return view('users.create');
+    }
+
+    /*Cadastrando úsuario*/
+
+    public function store()
+    {
+        dd('cadastrando usuario');
+    }
 }

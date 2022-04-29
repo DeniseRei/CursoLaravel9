@@ -37,8 +37,13 @@ class UserController extends Controller
 
     /*Cadastrando úsuario*/
 
-    public function store()
+    public function store(Request $request)
     {
-        dd('cadastrando usuario');
+        $data = $request->all();
+        $data['password'] = bcrypt($request->password);
+
+        $user = User::create($data);
+
+        return redirect()->route('users.index');
     }
 }

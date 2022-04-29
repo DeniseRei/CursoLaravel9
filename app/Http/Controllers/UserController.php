@@ -45,5 +45,12 @@ class UserController extends Controller
         $user = User::create($data);
 
         return redirect()->route('users.index');
+
+        /*para inserir dados selecionados*/
+        //$request->only(['name', 'email', 'password']); opcao 1
+        /*$user = new User; opcao 2
+        $user->name = $request->get('name');
+        $user->name = $request->name;
+        $user->save();*/
     }
 }

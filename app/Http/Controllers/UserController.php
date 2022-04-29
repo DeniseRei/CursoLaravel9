@@ -7,16 +7,24 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+      /*
+     Retorna todos os úsuarios
+     */
     public function index()
     {
         $users = User::all();
-        //dd('UserController@index');
+
         return view('users.index', compact('users'));
     }
-
+    /*
+    Retorna o cliente pelo id
+    */
     public function show($id)
     {
-        dd('UserController@show', $id);
-        //return view('users.index');
+        //$user = User::where('id', $id)->first();
+        if(!$user = User::find($id))
+            return redirect()->route('users.index');
+
+        return view('users.show', compact('user'));
     }
 }

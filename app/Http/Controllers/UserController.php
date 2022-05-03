@@ -57,4 +57,22 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->save();*/
     }
+
+    public function edit($id)
+    {
+        //Filtrando usuario pelo id
+        if(!$user = User::find($id))
+        return redirect()->route('users.index');
+
+        return view('users.edit', compact('user'));
+    }
+
+    public function update($id, Request $request)
+    {
+           //Filtrando usuario pelo id
+           if(!$user = User::find($id) && $request->get('id') === $id)
+           dd($request->all());
+           return redirect()->route('users.index');
+
+    }
 }

@@ -11,9 +11,21 @@ class UserController extends Controller
       /*
      Retorna todos os úsuarios
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        /*no igual pode utilizar o LIKE ou =,
+        e o % serve para pesquisar tanto no inicio quando no final da correspondencia toSql()
+        é pra ver a query correspondente*/
+        //$users = User::where('name', "LIKE", "%{$request->search}%")->get();
+
+        /*Com a função de callback*/
+        $search = $request->search;
+        $users = User::where(function ($query) use ($search){
+            if ($search) {
+                $query->where('email',$search);
+                $query->orWhere('name', 'LIKE', "%{$search}%");
+            }
+        })->get();
 
         return view('users.index', compact('users'));
     }

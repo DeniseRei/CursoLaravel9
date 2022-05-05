@@ -46,4 +46,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getUsers(string|null $search = null)
+    {
+        /*Com a função de callback*/
+        $users = $this->where(function ($query) use ($search) {
+            if ($search) {
+                $query->where('email', $search);
+                $query->orWhere('name', 'LIKE', "%{$search}%");
+            }
+        })->get();
+
+        return $users;
+
+        /*no igual pode utilizar o LIKE ou =,
+		e o % serve para pesquisar tanto no inicio quando no final da correspondencia toSql()
+		é pra ver a query correspondente*/
+        //$users = User::where('name', "LIKE", "%{$request->search}%")->get();
+    }
 }

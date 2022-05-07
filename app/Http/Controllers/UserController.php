@@ -22,9 +22,9 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = $this->model
-                        ->getUsers(
-                            search: $request->get('search', '')
-                        );
+            ->getUsers(
+                search: $request->get('search', '')
+            );
         return view('users.index', compact('users'));
     }
 
@@ -89,5 +89,13 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
+    public function destroy($id)
+    {
+        if (!$user = User::find($id))
+            return redirect()->route('users.index');
 
+        $user->destroy($id);
+
+        return view('users.show', compact('user'));
+    }
 }

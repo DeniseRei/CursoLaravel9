@@ -47,6 +47,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function comments()
+    {   //jeito antigo
+        //return $this->hasMany(Comment::class, 'user_id', 'id');
+        return $this->hasMany(Comment::class);
+    }
+
     public function getUsers(string|null $search = null)
     {
         /*Com a função de callback*/

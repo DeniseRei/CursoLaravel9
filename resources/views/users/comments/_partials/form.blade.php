@@ -15,9 +15,13 @@
     transition
     ease-in-out
     m-0
-    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"></textarea>
+    focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none">{{ $comment->body ?? old('body') }}</textarea>
     <label for="visible">
-        <input type="checkbox" name="visible">
+        <input type="checkbox" name="visible"
+            @if (isset($comment) && $comment->visible)
+                checked = "checked"
+            @endif
+        >
         Visível?
     </label>
     <button type="submit"

@@ -25,7 +25,10 @@ class CommentController extends Controller
         if (!$user = $this->user->find($user_id))
             return redirect()->back();
 
-        $comments = $user->comments()->get();
+        /*Filtro comentário*/
+        $comments = $user->comments()
+            ->where('body', 'LIKE', "%{$request->search}%")
+            ->get();
 
         return view('users.comments.index', compact('user', 'comments'));
     }

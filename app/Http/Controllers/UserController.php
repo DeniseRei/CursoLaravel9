@@ -23,8 +23,9 @@ class UserController extends Controller
     {
         $users = $this->model
             ->getUsers(
-                search: $request->get('search', '')
+                search: $request->search ?? ''
             );
+
         return view('users.index', compact('users'));
     }
 

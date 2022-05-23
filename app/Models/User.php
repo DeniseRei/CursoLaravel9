@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -47,11 +48,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function comments()
-    {   //jeito antigo
-        //return $this->hasMany(Comment::class, 'user_id', 'id');
-        return $this->hasMany(Comment::class);
-    }
 
     public function getUsers(string|null $search = null)
     {
@@ -63,7 +59,7 @@ class User extends Authenticatable
             }
         })
             ->with('comments')
-            ->get();
+            ->paginate();
 
         return $users;
 
@@ -72,4 +68,11 @@ class User extends Authenticatable
 		é pra ver a query correspondente*/
         //$users = User::where('name', "LIKE", "%{$request->search}%")->get();
     }
+
+    public function comments()
+    {   //jeito antigo
+        //return $this->hasMany(Comment::class, 'user_id', 'id');
+        return $this->hasMany(Comment::class);
+    }
+
 }

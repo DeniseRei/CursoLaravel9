@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUpdateUserFormRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -55,7 +56,13 @@ class UserController extends Controller
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
 
-        $user = User::create($data);
+        //$extension = $request->image->getClientOriginalExtension(); //pegando a extensão do arquivo de upload
+        if($request->image){
+            $data['image'] = $request->image->store('users'); //1 exemplo
+           //$data['image'] = $request->image->storeAs('users', now() . ".{$extension}");
+        }
+
+        $this->model->create($data);
 
         return redirect()->route('users.index');
 
@@ -83,8 +90,17 @@ class UserController extends Controller
             return redirect()->route('users.index');
 
         $data =  $request->only('name', 'email');
+
         if ($request->password)
             $data['password'] = bcrypt($request->password);
+            //dd(Storage::exists($request->image));
+        if($request->image){
+
+            if ($user->image && Storage::exists($user->image)) { //verifico se existe o upload do usuario
+                Storage::delete($user->image);  //se sim, deleto o arquivo existente
+            }
+            $data['image'] = $request->image->store('users'); //1 exemplo
+        }
 
         $user->update($data);
         return redirect()->route('users.index');
